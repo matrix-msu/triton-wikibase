@@ -1,0 +1,144 @@
+{
+  "variables": {
+    "triton_url": "{{env `SDC_URL`}}",
+    "triton_account": "{{env `SDC_ACCOUNT`}}",
+    "triton_key_id": "{{env `SDC_KEY_ID`}}",
+    "version_suffix": "-{{timestamp}}"
+  },
+  "builders": [
+    {
+      "name": "triton",
+      "type": "triton",
+      "triton_url": "{{user `triton_url`}}",
+      "triton_account": "{{user `triton_account`}}",
+      "triton_key_id": "{{user `triton_key_id`}}",
+      "source_machine_name": "image-builder-{{uuid}}",
+      "source_machine_package": "sample-1G",
+      "source_machine_image_filter": {
+        "name": "base-64-lts",
+        "version": "18.4.0"
+      },
+      "source_machine_networks": ["eee6c844-a056-4f36-82ad-c17fc6959255"],
+      "ssh_username": "root",
+      "image_name": "wikibase",
+      "image_version": "0.0.7{{user `version_suffix`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "echo Installing git; pkgin -y install git;"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo Installing apache24; pkgin -y install apache;"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo installing php72 and libs; pkgin -y install php72-extensions"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "apache.files/httpd.conf.php72.patch",
+      "destination": "/opt/local/etc/httpd/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo patching apache config to enable prefork and php modules",
+        "cd /opt/local/etc/httpd/",
+        "patch < httpd.conf.php72.patch",
+	"echo removing default index.html file",
+	"rm /opt/local/share/httpd/htdocs/index.html"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo enabling apache; svcadm enable apache"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "pkgin -y install mysql-server",
+        "echo enabling mysql; svcadm enable mysql",
+        "sleep 5",
+        "echo securing mysql",
+        "/opt/local/bin/mysql -u root -e \"DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');\"",
+        "/opt/local/bin/mysql -u root -e \"DELETE FROM mysql.user WHERE User='';\"",
+        "/opt/local/bin/mysql -u root -e \"DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';\"",
+        "/opt/local/bin/mysql -u root -e \"FLUSH PRIVILEGES;\""
+      ]
+    },
+    {
+      "type": "file",
+      "source": "vendor/mediawiki-1.32.0.tar.gz",
+      "destination": "/opt/local/share/httpd/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "cd /opt/local/share/httpd",
+        "tar -xzf mediawiki-1.32.0.tar.gz",
+        "mv mediawiki-1.32.0 htdocs/w"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "mediawiki.files/55-configure-mediawiki.sh",
+      "destination": "/var/zoneinit/includes/"
+    },
+    {
+      "type": "file",
+      "source": "mediawiki.files/get-composer.sh",
+      "destination": "/opt/local/bin/"
+    },
+    {
+      "type": "file",
+      "source": "mediawiki.files/composer.local.json",
+      "destination": "/opt/local/share/httpd/htdocs/w/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "/opt/local/bin/get-composer.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir /opt/local/share/httpd/htdocs/w/extensions/Wikibase"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "vendor/wikibase/mediawiki-extensions-Wikibase-REL1_32/",
+      "destination": "/opt/local/share/httpd/htdocs/w/extensions/Wikibase/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "cd /opt/local/share/httpd/htdocs/w/extensions/Wikibase; composer install ",
+        "cd /opt/local/share/httpd/htdocs/w/; composer install "
+      ]
+    },
+    {
+      "type": "file",
+      "source": "vendor/mediawiki-extensions/OAuth",
+      "destination": "/opt/local/share/httpd/htdocs/w/extensions/"
+    },
+    {
+      "type": "shell", "inline": [
+        "echo DONE" 
+      ]
+    }
+
+  ]
+}
