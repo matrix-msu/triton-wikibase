@@ -28,19 +28,19 @@
     {
       "type": "shell",
       "inline": [
+        "echo pkgin update and upgrade; pkgin -y update; pkgin -y upgrade;"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
         "echo Installing git; pkgin -y install git;"
       ]
     },
     {
       "type": "shell",
       "inline": [
-        "echo Installing apache24; pkgin -y install apache;"
-      ]
-    },
-    {
-      "type": "shell",
-      "inline": [
-        "echo installing php72 and libs; pkgin -y install php72-extensions"
+        "echo installing apache 2.4, php72, and libs; pkgin -y install php72-extensions"
       ]
     },
     {
@@ -104,6 +104,11 @@
       "type": "file",
       "source": "mediawiki.files/composer.local.json",
       "destination": "/opt/local/share/httpd/htdocs/w/"
+    },
+    {
+      "type": "file",
+      "source": "root-overlay/",
+      "destination": "/"
     },
     {
       "type": "shell",

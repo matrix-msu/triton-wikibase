@@ -7,6 +7,9 @@ MEDIAWIKIPW=`/usr/bin/uuid`
 echo $MEDIAWIKIPW | /usr/sbin/mdata-put mediawiki_pw 
 
 SITEURL=`mdata-get siteurl`
+SITEURL=http://`mdata-get sdc:nics | json -a ip`/
+SITEURL=http://`mdata-get sdc:alias`.`mdata-get sdc:dns_domain`
+
 
 /opt/local/bin/mysql -u root <<-EOF
 UPDATE mysql.user SET authentication_string=PASSWORD('$PASSWORD') WHERE User='root';
