@@ -94,18 +94,13 @@
     },
     {
       "type": "file",
-      "source": "mediawiki.files/get-composer.sh",
-      "destination": "/opt/local/bin/"
-    },
-    {
-      "type": "file",
       "source": "mediawiki.files/composer.local.json",
       "destination": "/opt/local/share/httpd/htdocs/w/"
     },
     {
       "type": "shell",
       "inline": [
-        "/opt/local/bin/get-composer.sh"
+        "wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet --install-dir=/opt/local/bin/ --filename=composer"
       ]
     },
     {
