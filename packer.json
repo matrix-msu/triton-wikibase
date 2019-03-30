@@ -45,8 +45,8 @@
     },
     {
       "type": "file",
-      "source": "apache.files/httpd.conf.php72.patch",
-      "destination": "/opt/local/etc/httpd/"
+      "source": "root-overlay/",
+      "destination": "/"
     },
     {
       "type": "shell",
@@ -54,8 +54,8 @@
         "echo patching apache config to enable prefork and php modules",
         "cd /opt/local/etc/httpd/",
         "patch < httpd.conf.php72.patch",
-	"echo removing default index.html file",
-	"rm /opt/local/share/httpd/htdocs/index.html"
+        "echo removing default index.html file",
+        "rm /opt/local/share/httpd/htdocs/index.html"
       ]
     },
     {
@@ -104,11 +104,6 @@
       "type": "file",
       "source": "mediawiki.files/composer.local.json",
       "destination": "/opt/local/share/httpd/htdocs/w/"
-    },
-    {
-      "type": "file",
-      "source": "root-overlay/",
-      "destination": "/"
     },
     {
       "type": "shell",
