@@ -34,7 +34,8 @@
     {
       "type": "shell",
       "inline": [
-        "echo Installing git; pkgin -y install git;"
+        "echo Installing git; pkgin -y install git",
+        "echo Installing wget; pkgin -y install wget"
       ]
     },
     {
@@ -78,14 +79,10 @@
       ]
     },
     {
-      "type": "file",
-      "source": "vendor/mediawiki-1.32.0.tar.gz",
-      "destination": "/opt/local/share/httpd/"
-    },
-    {
       "type": "shell",
       "inline": [
         "cd /opt/local/share/httpd",
+        "wget https://releases.wikimedia.org/mediawiki/1.32/mediawiki-1.32.0.tar.gz",
         "tar -xzf mediawiki-1.32.0.tar.gz",
         "mv mediawiki-1.32.0 htdocs/w"
       ]
