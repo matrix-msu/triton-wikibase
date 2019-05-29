@@ -35,13 +35,14 @@
       "type": "shell",
       "inline": [
         "echo Installing git; pkgin -y install git",
-        "echo Installing wget; pkgin -y install wget"
+        "echo Installing wget; pkgin -y install wget",
+        "echo Installing unzip; pkgin -y install unzip"
       ]
     },
     {
       "type": "shell",
       "inline": [
-        "echo installing apache 2.4, php72, and libs; pkgin -y install php72-extensions"
+        "echo installing apache 2.4, php73, and libs; pkgin -y install php73-extensions"
       ]
     },
     {
@@ -82,9 +83,9 @@
       "type": "shell",
       "inline": [
         "cd /opt/local/share/httpd",
-        "wget https://releases.wikimedia.org/mediawiki/1.32/mediawiki-1.32.0.tar.gz",
-        "tar -xzf mediawiki-1.32.0.tar.gz",
-        "mv mediawiki-1.32.0 htdocs/w"
+        "wget https://releases.wikimedia.org/mediawiki/1.31/mediawiki-1.31.1.tar.gz",
+        "tar -xzf mediawiki-1.31.1.tar.gz",
+        "mv mediawiki-1.31.1 htdocs/w"
       ]
     },
     {
@@ -112,7 +113,7 @@
     },
     {
       "type": "file",
-      "source": "vendor/wikibase/mediawiki-extensions-Wikibase-REL1_32/",
+      "source": "vendor/wikibase/mediawiki-extensions-Wikibase-REL1_31/",
       "destination": "/opt/local/share/httpd/htdocs/w/extensions/Wikibase/"
     },
     {
