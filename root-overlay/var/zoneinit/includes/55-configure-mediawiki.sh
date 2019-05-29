@@ -1,10 +1,10 @@
 #!/usr/bin/bash
 
 PASSWORD=`/usr/bin/uuid`
-echo $PASSWORD | /usr/sbin/mdata-put mysql-password 
+echo -n $PASSWORD | /usr/sbin/mdata-put mysql-password 
 
 MEDIAWIKIPW=`/usr/bin/uuid`
-echo $MEDIAWIKIPW | /usr/sbin/mdata-put mediawiki-password 
+echo -n $MEDIAWIKIPW | /usr/sbin/mdata-put mediawiki-password 
 
 SITEURL=http://`mdata-get sdc:alias`.`mdata-get sdc:dns_domain`
 
