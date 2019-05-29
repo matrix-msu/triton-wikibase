@@ -1,10 +1,10 @@
 #!/usr/bin/bash
 
 PASSWORD=`/usr/bin/uuid`
-echo $PASSWORD | /usr/sbin/mdata-put mysql_pw 
+echo $PASSWORD | /usr/sbin/mdata-put mysql-password 
 
 MEDIAWIKIPW=`/usr/bin/uuid`
-echo $MEDIAWIKIPW | /usr/sbin/mdata-put mediawiki_pw 
+echo $MEDIAWIKIPW | /usr/sbin/mdata-put mediawiki-password 
 
 SITEURL=http://`mdata-get sdc:alias`.`mdata-get sdc:dns_domain`
 
@@ -17,10 +17,10 @@ EOF
 cd /opt/local/share/httpd/htdocs/w/maintenance
 
 php install.php \
-	--installdbuser root --installdbpass `mdata-get mysql_pw` \
+	--installdbuser root --installdbpass `mdata-get mysql-password` \
 	--dbserver localhost --dbtype mysql \
-	--dbuser mediawiki --dbpass `mdata-get mediawiki_pw` \
-	--pass `mdata-get mediawiki_pw` \
+	--dbuser mediawiki --dbpass `mdata-get mediawiki-password` \
+	--pass `mdata-get mediawiki-password` \
         --server $SITEURL \
 	TESTWIKI WIKIROOT 
 

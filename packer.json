@@ -90,11 +90,6 @@
     },
     {
       "type": "file",
-      "source": "mediawiki.files/55-configure-mediawiki.sh",
-      "destination": "/var/zoneinit/includes/"
-    },
-    {
-      "type": "file",
       "source": "mediawiki.files/composer.local.json",
       "destination": "/opt/local/share/httpd/htdocs/w/"
     },
