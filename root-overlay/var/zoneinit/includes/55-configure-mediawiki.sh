@@ -22,7 +22,7 @@ php install.php \
 	--dbuser mediawiki --dbpass `mdata-get mediawiki-password` \
 	--pass `mdata-get mediawiki-password` \
         --server $SITEURL \
-	TESTWIKI WIKIROOT 
+	WIKINAME WIKIROOT 
 
 #Now we enable wikibase the software was deployed as part of the
 #image, but final configuration and enabling must happen post
